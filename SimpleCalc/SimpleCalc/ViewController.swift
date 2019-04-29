@@ -8,11 +8,17 @@
 
 import UIKit
 
+extension Double {
+    var clean: String {
+        return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
+
 class ViewController: UIViewController {
     
     var isTypingNumber = false
-    var firstNumber = 0
-    var secondNumber = 0
+    var firstNumber = 0.0
+    var secondNumber = 0.0
     var operation = ""
     
     @IBOutlet weak var resultLabel: UILabel!
@@ -30,15 +36,15 @@ class ViewController: UIViewController {
     
     @IBAction func tappedOperation(_ sender: UIButton) {
         isTypingNumber = false
-        firstNumber = Int(resultLabel.text!)!
+        firstNumber = Double(resultLabel.text!)!
         operation = sender.currentTitle!
     }
     
     @IBAction func tappedCalc(_ sender: UIButton) {
         isTypingNumber = false
-        let result: Double
+        var result = 0.0
         var dividedByZero = false
-        secondNumber = Int(resultLabel.text!)!
+        secondNumber = Double(resultLabel.text!)!
         
         if (operation.elementsEqual("+")) {
             result = Double(firstNumber) + Double(secondNumber)
@@ -55,11 +61,9 @@ class ViewController: UIViewController {
         }
         
         if (dividedByZero) {
-            resultLabel.text = "Divide by 0 error"
+            resultLabel.text = "Error"
         } else {
-            if let intResult = Int(result!) {
-                
-            }
+            resultLabel.text = String(result.clean)
         }
     }
     
@@ -77,4 +81,3 @@ class ViewController: UIViewController {
 
 
 }
-
